@@ -1,0 +1,53 @@
+Option Explicit
+
+Sub Main()
+
+    Dim layerObj As AcadLayer
+    Set layerObj = ThisDrawing.Layers.Add("ManoVBAKonturas")
+
+    AddLine ' Linija
+    Call AddArc(81.9611, 67.1188, 13#, 77, 270) ' Kaireje didele arka
+    Call AddArc(86.6929, 87.5787, 8#, 257, 22) ' Kaireje maza arka
+    Call AddArc(213.9611, 67.1188, 13#, 270, 103) ' Desineje didele arka
+    Call AddArc(209.2292, 87.5787, 8#, 158, 283) ' Desineje maza arka
+    Call AddArc(147.9611, 112.1188, 58#, 338, 202) ' Didziausia arka
+    ZoomExtents
+
+End Sub
+
+
+Sub AddLine()
+    Dim lineObj As AcadLine
+    Dim startPoint(0 To 2) As Double
+    Dim endPoint(0 To 2) As Double
+    
+    ' Define the start and end points for the line
+    startPoint(0) = 81.9611: startPoint(1) = 54.1188: startPoint(2) = 0#
+    endPoint(0) = 213.9611: endPoint(1) = 54.1188: endPoint(2) = 0#
+    
+    ' Create the Line in model space
+    Set lineObj = ThisDrawing.ModelSpace.AddLine(startPoint, endPoint)
+End Sub
+
+Sub AddArc(centerPoint0Reiksme As Double, centerPoint1Reiksme As Double, RadiusReiksme As Double, StartAngleDegreeReiksme As Double, EndAngleInDegreeReiksme As Double)
+    Dim arcObj As AcadArc
+    Dim centerPoint(0 To 2) As Double
+    Dim radius As Double
+    Dim startAngleInDegree As Double
+    Dim endAngleInDegree As Double
+    
+    ' Define the arc
+    centerPoint(0) = centerPoint0Reiksme: centerPoint(1) = centerPoint1Reiksme: centerPoint(2) = 0#
+    radius = RadiusReiksme#
+    startAngleInDegree = StartAngleDegreeReiksme#
+    endAngleInDegree = EndAngleInDegreeReiksme#
+    
+    ' Convert the angles in degrees to angles in radians
+    Dim startAngleInRadian As Double
+    Dim endAngleInRadian As Double
+    startAngleInRadian = startAngleInDegree * 3.141592 / 180#
+    endAngleInRadian = endAngleInDegree * 3.141592 / 180#
+    
+    ' Create the Arc object in model space
+    Set arcObj = ThisDrawing.ModelSpace.AddArc(centerPoint, radius, startAngleInRadian, endAngleInRadian)
+End Sub
